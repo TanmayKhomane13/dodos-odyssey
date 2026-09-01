@@ -41,10 +41,17 @@ public class PlayerMovement : MonoBehaviour
             aimPoint.position = hit.point;
             Debug.Log("AIM HIT: " + hit.point);
         }
-        
+
         // Input / state
         bool grounded = controller.isGrounded;
-        bool jumpPressed = Input.GetButtonDown("Jump");     
+        bool jumpPressed = Input.GetButtonDown("Jump");   
+        bool shootPressed = Input.GetMouseButtonDown(0); // checks if LEFT MOUSE BUTTON is pressed  
+
+        if (shootPressed)
+        {
+            animator.SetBool("IsShooting", true);
+            Invoke(nameof(StopShooting), 0.5f);
+        }
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -111,5 +118,11 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("IsJumping", false);
         }
+    }
+
+    // helpers
+    void StopShooting()
+    {
+        animator.SetBool("IsShooting", false);
     }
 }
