@@ -49,6 +49,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (shootPressed)
         {
+            Vector3 direction = aimPoint.position - transform.position;
+            direction.y = 0f;
+            
+            transform.rotation = Quaternion.LookRotation(direction);
+            
             animator.SetBool("IsShooting", true);
             Invoke(nameof(StopShooting), 0.5f);
         }
