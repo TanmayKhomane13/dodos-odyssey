@@ -227,37 +227,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 810643008}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &207537816
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 207537817}
-  m_Layer: 0
-  m_Name: MuzzlePoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &207537817
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 207537816}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.44, y: -0.009, z: 0.689}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 767685858}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &241050439
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,12 +1177,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1643983410}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &767685858 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 46ef6a7089c934b2e9a2989f3f504d4d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1643983410}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &810643007
 GameObject:
   m_ObjectHideFlags: 0
@@ -1581,6 +1544,8 @@ MonoBehaviour:
   cameraTransform: {fileID: 330585546}
   gun: {fileID: 767685855}
   aimPoint: {fileID: 1861322908}
+  bulletPrefab: {fileID: 214215649754630895, guid: b1bb35acbc4c04dfb89e7decda704117,
+    type: 3}
 --- !u!4 &843875234 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 051ccbc14e21248c3a8abbadbc2cdce4,
@@ -2489,11 +2454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 46ef6a7089c934b2e9a2989f3f504d4d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 207537817}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46ef6a7089c934b2e9a2989f3f504d4d, type: 3}
 --- !u!1 &1646395294

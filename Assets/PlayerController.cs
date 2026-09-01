@@ -18,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
     private Transform rightHand;
     public GameObject gun;
     public Transform aimPoint;
+    public GameObject bulletPrefab;
+    private Vector3 bulletTarget;
+    private bool canShoot = true;
 
     void Start()
     {
@@ -36,26 +39,27 @@ public class PlayerMovement : MonoBehaviour
         );
 
         RaycastHit hit;
-        if(Physics.Raycast(ray, out hit))
-        {
-            aimPoint.position = hit.point;
-            Debug.Log("AIM HIT: " + hit.point);
-        }
 
         // Input / state
         bool grounded = controller.isGrounded;
         bool jumpPressed = Input.GetButtonDown("Jump");   
         bool shootPressed = Input.GetMouseButtonDown(0); // checks if LEFT MOUSE BUTTON is pressed  
 
-        if (shootPressed)
+        // shooting
+        if (shootPressed && canShoot && Physics.Raycast(ray, out hit))
         {
-            Vector3 direction = aimPoint.position - transform.position;
+            canShoot = false;
+
+            Vector3 direction = hit.point - transform.position;
             direction.y = 0f;
-            
             transform.rotation = Quaternion.LookRotation(direction);
-            
+
             animator.SetBool("IsShooting", true);
+
+            bulletTarget = hit.point;
+            Invoke(nameof(ShootBullet), 0.6f);
             Invoke(nameof(StopShooting), 0.5f);
+            Invoke(nameof(EnableShooting), 0.5f);
         }
 
         float horizontal = Input.GetAxis("Horizontal");
@@ -129,5 +133,20 @@ public class PlayerMovement : MonoBehaviour
     void StopShooting()
     {
         animator.SetBool("IsShooting", false);
+    }
+
+    void ShootBullet()
+    {
+        Vector3 bulletDirection = bulletTarget - gun.transform.position;
+        bulletDirection.Normalize();
+
+        Quaternion bulletRotation = Quaternion.LookRotation(bulletDirection);
+
+        Instantiate(bulletPrefab, gun.transform.position, bulletRotation);
+    }
+
+    void EnableShooting()
+    {
+        canShoot = true;
     }
 }
