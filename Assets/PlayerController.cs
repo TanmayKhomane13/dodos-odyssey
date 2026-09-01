@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     // GUN SECTION
     private Transform rightHand;
     public GameObject gun;
+    public Transform aimPoint;
 
     void Start()
     {
@@ -30,6 +31,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        Ray ray = Camera.main.ViewportPointToRay(
+            new Vector3(0.5f, 0.5f, 0f)
+        );
+
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit))
+        {
+            aimPoint.position = hit.point;
+            Debug.Log("AIM HIT: " + hit.point);
+        }
+        
         // Input / state
         bool grounded = controller.isGrounded;
         bool jumpPressed = Input.GetButtonDown("Jump");     
