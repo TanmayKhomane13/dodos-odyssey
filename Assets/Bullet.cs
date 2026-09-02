@@ -8,4 +8,16 @@ public class Bullet : MonoBehaviour
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
+
+        if (enemy != null)
+        {
+            enemy.TakeDamage(10f);
+        }
+
+        Destroy(gameObject);
+    }
 }
