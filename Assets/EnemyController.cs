@@ -8,5 +8,16 @@ public class EnemyController : MonoBehaviour
     {
         health -= damage;
         Debug.Log("Enemy Health: " + health);
+
+        if (health <= 0f)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Alien Died!");
+        Destroy(gameObject);
     }
 }
