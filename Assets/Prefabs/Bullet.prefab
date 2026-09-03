@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 30
+  impactForce: 0.1
 --- !u!54 &3876918367676055289
 Rigidbody:
   m_ObjectHideFlags: 0

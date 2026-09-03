@@ -23,8 +23,7 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
-        Debug.Log("Enemy Health: " + health);
-
+        
         if (health <= 0f)
         {
             Die();
@@ -32,9 +31,7 @@ public class EnemyController : MonoBehaviour
     }
 
     void Die()
-    {
-        Debug.Log("Alien Died!");
-        
+    {   
         if (animator != null)
         {
             animator.enabled = false;
@@ -57,12 +54,17 @@ public class EnemyController : MonoBehaviour
 
         foreach (Collider col in ragdollColliders)
         {
-            col.enabled = enabled;
+            col.enabled = true;
         }
 
         if (mainCollider != null)
         {
             mainCollider.enabled = !enabled;
         }
+    }
+
+    public void ApplyBulletImpact(Vector3 direction, float force)
+    {
+        transform.position += direction.normalized * force;
     }
 }

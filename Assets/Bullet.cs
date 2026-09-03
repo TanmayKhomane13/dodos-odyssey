@@ -3,6 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float speed = 20f;
+    public float impactForce = 0.02f;
 
     void Update()
     {
@@ -11,11 +12,15 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
+        EnemyController enemy = collision.gameObject.GetComponentInParent<EnemyController>();
 
         if (enemy != null)
         {
             enemy.TakeDamage(10f);
+
+            Vector3 impactDirection = transform.forward;
+
+            enemy.ApplyBulletImpact(impactDirection, impactForce);
         }
 
         Destroy(gameObject);
