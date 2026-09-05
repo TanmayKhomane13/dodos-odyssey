@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     public Transform player;
     public float attackDistance = 1f;
+    public float detectionDistance = 10f;
     public float moveSpeed = 7f;
     private bool isDead = false;
 
@@ -36,8 +37,15 @@ public class EnemyController : MonoBehaviour
             transform.position, player.position
         );
 
-        if (distance > attackDistance)
+        // ---------- Enemy AI ------------------------
+        if (distance <= attackDistance)
         {
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("IsAttacking", true);
+        }
+        else if (distance <= detectionDistance) {
+            // walk
+
             Vector3 direction = player.position - transform.position;
 
             direction.y = 0f;
@@ -48,6 +56,13 @@ public class EnemyController : MonoBehaviour
             characterController.Move(direction * moveSpeed * Time.deltaTime);
 
             animator.SetFloat("Speed", 1f);
+            animator.SetBool("IsAttacking", false);
+        }
+        else
+        {
+            // idle
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("IsAttacking", false);
         }
     }
 
