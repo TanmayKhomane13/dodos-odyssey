@@ -5,19 +5,50 @@ public class EnemyController : MonoBehaviour
     public float health = 100f;
     private Rigidbody[] ragdollRigidbodies;
     private Collider[] ragdollColliders;
-
+    private CharacterController characterController;
     private Animator animator;
-    private Collider mainCollider;
+    public Transform player;
+    public float attackDistance = 1f;
+    public float moveSpeed = 7f;
+    private bool isDead = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        mainCollider = GetComponent<Collider>();
+        characterController = GetComponent<CharacterController>();
 
         ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
         ragdollColliders = GetComponentsInChildren<Collider>();
 
         SetRagdoll(false);
+    }
+
+    void Update()
+    {
+        // check if enemy dead
+        if (isDead)
+            return;
+        
+        if (player == null)
+            return;
+        
+        float distance = Vector3.Distance(
+            transform.position, player.position
+        );
+
+        if (distance > attackDistance)
+        {
+            Vector3 direction = player.position - transform.position;
+
+            direction.y = 0f;
+            direction.Normalize();
+
+            transform.rotation = Quaternion.LookRotation(direction);
+
+            characterController.Move(direction * moveSpeed * Time.deltaTime);
+
+            animator.SetFloat("Speed", 1f);
+        }
     }
 
     public void TakeDamage(float damage)
@@ -32,14 +63,11 @@ public class EnemyController : MonoBehaviour
 
     void Die()
     {   
+        isDead = true;
+
         if (animator != null)
         {
             animator.enabled = false;
-        }
-
-        if (mainCollider != null)
-        {
-            mainCollider.enabled = false;
         }
 
         SetRagdoll(true);
@@ -57,14 +85,17 @@ public class EnemyController : MonoBehaviour
             col.enabled = true;
         }
 
-        if (mainCollider != null)
+        if (characterController != null)
         {
-            mainCollider.enabled = !enabled;
+            characterController.enabled = !enabled;
         }
     }
 
     public void ApplyBulletImpact(Vector3 direction, float force)
     {
-        transform.position += direction.normalized * force;
+        if (characterController == null || !characterController.enabled)
+            return;
+        
+        characterController.Move(direction.normalized * force);
     }
 }
