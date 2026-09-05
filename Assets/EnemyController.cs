@@ -13,6 +13,8 @@ public class EnemyController : MonoBehaviour
     public float moveSpeed = 7f;
     private bool isDead = false;
     private bool playerDetected = false;
+    public float attackCooldown = 1f;
+    private bool canAttack = true;
 
     void Start()
     {
@@ -69,6 +71,13 @@ public class EnemyController : MonoBehaviour
 
             animator.SetFloat("Speed", 0f);
             animator.SetBool("IsAttacking", true);
+
+            if (canAttack)
+            {
+                player.GetComponent<PlayerMovement>().TakeHit(); 
+                canAttack = false;
+                Invoke(nameof(ResetAttack), attackCooldown);  
+            }
         }
 
         // follow
@@ -129,5 +138,10 @@ public class EnemyController : MonoBehaviour
             return;
         
         characterController.Move(direction.normalized * force);
+    }
+
+    void ResetAttack()
+    {
+        canAttack = true;
     }
 }

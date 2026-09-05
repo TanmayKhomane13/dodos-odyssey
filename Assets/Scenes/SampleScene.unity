@@ -5086,6 +5086,11 @@ PrefabInstance:
       objectReference: {fileID: 843875234}
     - target: {fileID: 979434371755924909, guid: 42ffda22aca89420f8bf8f84c3624e51,
         type: 3}
+      propertyPath: attackCooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 979434371755924909, guid: 42ffda22aca89420f8bf8f84c3624e51,
+        type: 3}
       propertyPath: attackDistance
       value: 1.2
       objectReference: {fileID: 0}

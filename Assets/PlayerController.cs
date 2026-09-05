@@ -130,6 +130,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // helpers
+
+    // ----- Shooting related -----------
     void StopShooting()
     {
         animator.SetBool("IsShooting", false);
@@ -148,5 +150,12 @@ public class PlayerMovement : MonoBehaviour
     void EnableShooting()
     {
         canShoot = true;
+    }
+    // -------------------------------------
+
+    // ---------- HIT ---------------------
+    public void TakeHit()
+    {
+        animator.SetTrigger("Hit");
     }
 }
