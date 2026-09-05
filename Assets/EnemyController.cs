@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     public float detectionDistance = 10f;
     public float moveSpeed = 7f;
     private bool isDead = false;
+    private bool playerDetected = false;
 
     void Start()
     {
@@ -33,35 +34,51 @@ public class EnemyController : MonoBehaviour
         if (player == null)
             return;
         
+        // Calculate distance between ENEMY & PLAYER
         float distance = Vector3.Distance(
             transform.position, player.position
         );
 
+        Vector3 directionToPlayer = player.position - transform.position;
+        directionToPlayer.y = 0f;
+        directionToPlayer.Normalize();
+
+        float angle = Vector3.Angle(transform.forward, directionToPlayer);
+
         // ---------- Enemy AI ------------------------
+        
+        // detect player
+        if (!playerDetected)
+        {
+            if (distance <= detectionDistance && angle <= 60f)
+            {
+                playerDetected = true;
+            }
+            else
+            {
+                animator.SetFloat("Speed", 0f);
+                animator.SetBool("IsAttacking", false);
+                return;
+            }
+        }
+
+        // attack
         if (distance <= attackDistance)
         {
+            transform.rotation = Quaternion.LookRotation(directionToPlayer);
+
             animator.SetFloat("Speed", 0f);
             animator.SetBool("IsAttacking", true);
         }
-        else if (distance <= detectionDistance) {
-            // walk
 
-            Vector3 direction = player.position - transform.position;
-
-            direction.y = 0f;
-            direction.Normalize();
-
-            transform.rotation = Quaternion.LookRotation(direction);
-
-            characterController.Move(direction * moveSpeed * Time.deltaTime);
-
-            animator.SetFloat("Speed", 1f);
-            animator.SetBool("IsAttacking", false);
-        }
+        // follow
         else
         {
-            // idle
-            animator.SetFloat("Speed", 0f);
+            transform.rotation = Quaternion.LookRotation(directionToPlayer);
+
+            characterController.Move(directionToPlayer * moveSpeed * Time.deltaTime);
+
+            animator.SetFloat("Speed", 1f);
             animator.SetBool("IsAttacking", false);
         }
     }
