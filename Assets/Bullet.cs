@@ -4,6 +4,7 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 20f;
     public float impactForce = 0.1f;
+    public GameObject impactEffect;
 
     void Update()
     {
@@ -22,6 +23,11 @@ public class Bullet : MonoBehaviour
 
             enemy.ApplyBulletImpact(impactDirection, impactForce);
         }
+
+        // instantiate particle system effect
+        Instantiate(
+            impactEffect, collision.contacts[0].point, Quaternion.identity
+        );
 
         Destroy(gameObject);
     }

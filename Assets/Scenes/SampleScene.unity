@@ -4858,6 +4858,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9112064619545004561, guid: 7a3ba79ddcd7746f0aa8d46064445683, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 3667737085648540087, guid: 439efce1c86b74620816cf93ac4ffc74, type: 3}
+    - target: {fileID: 9112064619545004561, guid: 7a3ba79ddcd7746f0aa8d46064445683, type: 3}
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 330585546}
