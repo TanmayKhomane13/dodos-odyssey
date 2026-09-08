@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "dodos-odyssey.sln"
+    "dotnet.defaultSolution": "dodos-odyssey-Unity6.slnx"
 }
