@@ -74,7 +74,7 @@ public class EnemyController : MonoBehaviour
 
             if (canAttack)
             {
-                player.GetComponent<PlayerMovement>().TakeHit(); 
+                player.GetComponent<PlayerController>().TakeHit(); 
                 canAttack = false;
                 Invoke(nameof(ResetAttack), attackCooldown);  
             }

@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
+    // Health
+    public float health = 100f;
+
     // Speeds
     public float moveSpeed = 2f;
     public float runSpeed = 5f;
@@ -131,6 +134,22 @@ public class PlayerMovement : MonoBehaviour
 
     // helpers
 
+    // function to take damage
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+
+        if (health <= 0f)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Player Died!");
+    }
+
     // ----- Shooting related -----------
     void StopShooting()
     {
@@ -157,5 +176,6 @@ public class PlayerMovement : MonoBehaviour
     public void TakeHit()
     {
         animator.SetTrigger("Hit");
+        TakeDamage(10f);
     }
 }
