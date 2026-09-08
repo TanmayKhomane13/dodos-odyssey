@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     // Health
     public float health = 100f;
+    private bool isDead = false;
 
     // Speeds
     public float moveSpeed = 2f;
@@ -11,7 +12,10 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 10f;
     public float jumpHeight = 2f;
 
+    // Physics
     private Vector3 velocity;
+    private Rigidbody [] ragdollRigidbodies;
+    private Collider [] ragdollColliders;
 
     private CharacterController controller;
     private Animator animator;
@@ -30,6 +34,11 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
+        // ragdoll
+        ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
+        ragdollColliders = GetComponentsInChildren<Collider>();
+        SetRagdoll(false);
+
         // bone based weapon attachment
         rightHand = animator.GetBoneTransform(HumanBodyBones.RightHand);
         gun.transform.SetParent(rightHand);
@@ -37,6 +46,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // check if player dead
+        if (isDead)
+            return;
+
         Ray ray = Camera.main.ViewportPointToRay(
             new Vector3(0.5f, 0.5f, 0f)
         );
@@ -147,7 +160,14 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Player Died!");
+        isDead = true;
+
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
+
+        SetRagdoll(true);
     }
 
     // ----- Shooting related -----------
@@ -177,5 +197,23 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger("Hit");
         TakeDamage(10f);
+    }
+
+    void SetRagdoll(bool enabled)
+    {
+        foreach (Rigidbody rb in ragdollRigidbodies)
+        {
+            rb.isKinematic = !enabled;
+        }
+
+        foreach (Collider col in ragdollColliders)
+        {
+            col.enabled = true;
+        }
+
+        if (controller != null)
+        {
+            controller.enabled = !enabled;
+        }
     }
 }
