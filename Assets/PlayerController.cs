@@ -1,10 +1,12 @@
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
     // Health
     public float health = 100f;
     private bool isDead = false;
+    public TMP_Text healthText;
 
     // Speeds
     public float moveSpeed = 2f;
@@ -31,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        healthText.text = health.ToString("0");
+
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
@@ -151,6 +155,8 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+        health = Mathf.Max(health, 0f);
+        healthText.text = health.ToString("0");
 
         if (health <= 0f)
         {
