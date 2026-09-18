@@ -139,7 +139,6 @@ public class AlienBossController : MonoBehaviour
     // -------- SHOOTING ------------------
     void ShootBullet()
     {
-        Debug.Log("Shoot Bullet Called");
         Vector3 targetPosition = player.position + Vector3.up * 1.2f;
         Vector3 bulletDirection = targetPosition - MuzzleUp.position;
 
