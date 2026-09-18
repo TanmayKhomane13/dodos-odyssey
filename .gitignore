@@ -105,4 +105,13 @@ InitTestScene*.unity*
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
 
+# Downloaded Assets
+/Assets/Nicrom
+/Assets/Hodaart
+/Assets/ALP_Assets
+/Assets/Stylized Hous
+/Assets/Scenes/
+/Assets/gun
+/Assets/Art
+
 .DS_Store

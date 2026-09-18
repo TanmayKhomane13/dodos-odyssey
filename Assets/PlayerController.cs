@@ -33,7 +33,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        healthText.text = health.ToString("0");
+        if (healthText != null)
+            healthText.text = health.ToString("0");
 
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
@@ -156,7 +157,9 @@ public class PlayerController : MonoBehaviour
     {
         health -= damage;
         health = Mathf.Max(health, 0f);
-        healthText.text = health.ToString("0");
+
+        if (healthText != null)
+            healthText.text = health.ToString("0");
 
         if (health <= 0f)
         {
