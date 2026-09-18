@@ -205,7 +205,6 @@ public class PlayerController : MonoBehaviour
     public void TakeHit()
     {
         animator.SetTrigger("Hit");
-        TakeDamage(10f);
     }
 
     void SetRagdoll(bool enabled)
@@ -217,7 +216,7 @@ public class PlayerController : MonoBehaviour
 
         foreach (Collider col in ragdollColliders)
         {
-            col.enabled = true;
+            col.enabled = enabled;
         }
 
         if (controller != null)

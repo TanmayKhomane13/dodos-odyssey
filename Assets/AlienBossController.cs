@@ -19,6 +19,8 @@ public class AlienBossController : MonoBehaviour
     // GUN SECTION
     private Transform rightHand;
     public GameObject gun;
+    public Transform MuzzleUp;
+    public Transform MuzzleDown;
     public GameObject bulletPrefab;
     private bool canShoot = true;
 
@@ -137,11 +139,13 @@ public class AlienBossController : MonoBehaviour
     // -------- SHOOTING ------------------
     void ShootBullet()
     {
+        Debug.Log("Shoot Bullet Called");
         Vector3 targetPosition = player.position + Vector3.up * 1.2f;
-        Vector3 bulletDirection = targetPosition - gun.transform.position;
+        Vector3 bulletDirection = targetPosition - MuzzleUp.position;
 
         Quaternion bulletRotation = Quaternion.LookRotation(bulletDirection);
-        Instantiate(bulletPrefab, gun.transform.position, bulletRotation);
+        Instantiate(bulletPrefab, MuzzleUp.position, bulletRotation);
+        Instantiate(bulletPrefab, MuzzleDown.position, bulletRotation);
     }
 
     void StartShooting()
