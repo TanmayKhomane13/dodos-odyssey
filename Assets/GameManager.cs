@@ -17,10 +17,16 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
 
     public SaveManager saveManager;
+    public UnityEngine.UI.Button resumeButton;
     public static bool shouldLoadSave = false;
 
     void Start()
     {
+        if (!saveManager.HasSave())
+        {
+            resumeButton.interactable = false;
+        }
+        
         pausePanel.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -60,6 +66,9 @@ public class GameManager : MonoBehaviour
     }
     public void Resume()
     {
+        if (!saveManager.HasSave())
+            return;
+            
         shouldLoadSave = true;
 
         Time.timeScale = 1f;

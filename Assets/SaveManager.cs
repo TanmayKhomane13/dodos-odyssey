@@ -3,6 +3,7 @@ using UnityEngine;
 public class SaveManager : MonoBehaviour
 {
     private const string SaveKey = "DodosOdyssey_Save";
+
     public PlayerController player;
 
     // Saving the states
@@ -30,6 +31,12 @@ public class SaveManager : MonoBehaviour
 
         PlayerPrefs.SetString(SaveKey, json);
         PlayerPrefs.Save();
+    }
+
+    // function to check if save exists
+    public bool HasSave()
+    {
+        return PlayerPrefs.HasKey(SaveKey);
     }
 
     // Loading the states
