@@ -16,12 +16,21 @@ public class GameManager : MonoBehaviour
     public GameObject pausePanel;
     private bool isPaused = false;
 
+    public SaveManager saveManager;
+    public static bool shouldLoadSave = false;
+
     void Start()
     {
         pausePanel.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (shouldLoadSave)
+        {
+            saveManager.LoadGame();
+            shouldLoadSave = false;
+        }
 
         StartCoroutine(LevelIntro());
     }
@@ -44,17 +53,23 @@ public class GameManager : MonoBehaviour
     // --------- Main Menu -------------
     public void NewGame()
     {
+        shouldLoadSave = false;
+
         Time.timeScale = 1f;
         SceneManager.LoadScene("Level 1");
     }
     public void Resume()
     {
+        shouldLoadSave = true;
+
         Time.timeScale = 1f;
         SceneManager.LoadScene("Level 1");
     }
 
     public void MainMenu()
     {
+        saveManager.SaveGame();
+
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
