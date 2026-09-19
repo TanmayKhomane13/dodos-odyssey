@@ -205,6 +205,7 @@ public class PlayerController : MonoBehaviour
     public void TakeHit()
     {
         animator.SetTrigger("Hit");
+        TakeDamage(10f);
     }
 
     void SetRagdoll(bool enabled)

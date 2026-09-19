@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
 
@@ -14,6 +15,21 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(LevelIntro());
     }
+
+    // --------- Main Menu -------------
+    public void NewGame()
+    {
+        SceneManager.LoadScene("Level 1");
+    }
+    public void Resume()
+    {
+        SceneManager.LoadScene("Level 1");
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    // ---------------------------------
 
     IEnumerator LevelIntro()
     {

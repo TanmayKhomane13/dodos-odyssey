@@ -31,7 +31,7 @@ public class AlienBossController : MonoBehaviour
 
         ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
         ragdollColliders = GetComponentsInChildren<Collider>();
-        //SetRagdoll(false);
+        SetRagdoll(false);
 
         // bone based weapon attachment
         rightHand = animator.GetBoneTransform(HumanBodyBones.RightHand);
@@ -127,7 +127,7 @@ public class AlienBossController : MonoBehaviour
 
         foreach (Collider col in ragdollColliders)
         {
-            col.enabled = true;
+            col.enabled = enabled;
         }
 
         if (characterController != null)
