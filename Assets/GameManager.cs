@@ -5,29 +5,85 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
+    // Intro
     public TextMeshProUGUI locationText;
     public TextMeshProUGUI levelTitleText;
 
     public float fadeDuration = 1f;
     public float displayDuration = 2f;
 
+    // Pause UI
+    public GameObject pausePanel;
+    private bool isPaused = false;
+
     void Start()
     {
+        pausePanel.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         StartCoroutine(LevelIntro());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
     }
 
     // --------- Main Menu -------------
     public void NewGame()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Level 1");
     }
     public void Resume()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Level 1");
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
     public void QuitGame()
     {
+        Time.timeScale = 1f;
         Application.Quit();
+    }
+    // ---------------------------------
+
+    // --------- Pause System ----------
+    void PauseGame()
+    {
+        isPaused = true;
+        pausePanel.SetActive(true);
+        Time.timeScale = 0f;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        pausePanel.SetActive(false);
+        Time.timeScale = 1f;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
     // ---------------------------------
 
