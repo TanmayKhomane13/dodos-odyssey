@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     private Vector3 bulletTarget;
     private bool canShoot = true;
+    private bool isShooting = false;
 
     void Start()
     {
@@ -69,29 +70,10 @@ public class PlayerController : MonoBehaviour
         bool jumpPressed = Input.GetButtonDown("Jump");   
         bool shootPressed = Input.GetMouseButtonDown(0); // checks if LEFT MOUSE BUTTON is pressed  
 
-        // shooting
-        if (shootPressed && canShoot && Physics.Raycast(ray, out hit))
-        {
-            canShoot = false;
-
-            Vector3 direction = hit.point - transform.position;
-            direction.y = 0f;
-            transform.rotation = Quaternion.LookRotation(direction);
-
-            animator.SetBool("IsShooting", true);
-
-            bulletTarget = hit.point;
-            Invoke(nameof(ShootBullet), 0.6f);
-            Invoke(nameof(StopShooting), 0.5f);
-            Invoke(nameof(EnableShooting), 0.5f);
-        }
-
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-
         // movement
-        // Vector3 movement = new Vector3(horizontal, 0f, vertical);
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
 
@@ -102,6 +84,23 @@ public class PlayerController : MonoBehaviour
         cameraRight.Normalize();
 
         Vector3 movement = cameraForward * vertical + cameraRight * horizontal;
+
+        // shooting
+        if (shootPressed && canShoot && !IsMovingBack(movement, cameraForward) && Physics.Raycast(ray, out hit))
+        {
+            canShoot = false;
+            isShooting = true;
+
+            Vector3 direction = hit.point - transform.position;
+            direction.y = 0f;
+            transform.rotation = Quaternion.LookRotation(direction);
+
+            animator.SetTrigger("Shoot");
+
+            bulletTarget = hit.point;
+            Invoke(nameof(ShootBullet), 0.6f);
+            Invoke(nameof(EnableShooting), 0.6f);
+        }
 
         float speed = movement.magnitude;
         animator.SetFloat("Speed", speed);
@@ -154,6 +153,13 @@ public class PlayerController : MonoBehaviour
     }
 
     // helpers
+    bool IsMovingBack(Vector3 movement, Vector3 cameraForward)
+    {
+        if (movement.magnitude < 0.1f) 
+            return false;
+        
+        return Vector3.Dot(movement.normalized, cameraForward.normalized) < -0.5f;
+    }
 
     // function to take damage
     public void TakeDamage(float damage)
@@ -180,12 +186,6 @@ public class PlayerController : MonoBehaviour
         }
 
         SetRagdoll(true);
-    }
-
-    // ----- Shooting related -----------
-    void StopShooting()
-    {
-        animator.SetBool("IsShooting", false);
     }
 
     void ShootBullet()
