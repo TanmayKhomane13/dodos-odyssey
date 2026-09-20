@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public string enemyID;
     public float health = 100f;
     private Rigidbody[] ragdollRigidbodies;
     private Collider[] ragdollColliders;
@@ -114,6 +115,11 @@ public class EnemyController : MonoBehaviour
         SetRagdoll(true);
     }
 
+    public bool IsDead()
+    {
+        return isDead;
+    }
+
     void SetRagdoll(bool enabled)
     {
         foreach (Rigidbody rb in ragdollRigidbodies)
@@ -143,5 +149,15 @@ public class EnemyController : MonoBehaviour
     void ResetAttack()
     {
         canAttack = true;
+    }
+
+    public void LoadState(float savedHealth, bool savedIsDead)
+    {
+        health = savedHealth;
+
+        if (savedIsDead)
+        {
+            Die();
+        }
     }
 }

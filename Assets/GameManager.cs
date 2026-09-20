@@ -34,8 +34,7 @@ public class GameManager : MonoBehaviour
 
         if (shouldLoadSave)
         {
-            saveManager.LoadGame();
-            shouldLoadSave = false;
+            StartCoroutine(LoadSavedGame());
         }
 
         StartCoroutine(LevelIntro());
@@ -151,5 +150,14 @@ public class GameManager : MonoBehaviour
 
         color.a = endAlpha;
         text.color = color;
+    }
+
+    IEnumerator LoadSavedGame()
+    {
+        // Wait for all other objects to initialize
+        yield return null;
+
+        saveManager.LoadGame();
+        shouldLoadSave = false;
     }
 }
