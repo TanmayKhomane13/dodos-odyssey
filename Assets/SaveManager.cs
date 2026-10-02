@@ -75,6 +75,9 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    // ------------- Checkpoint Section ---------------------------
+
+    // ============ SaveCheckpoint ===================
     public void SaveCheckpoint()
     {
         GameSaveData saveData = new GameSaveData();
@@ -120,6 +123,68 @@ public class SaveManager : MonoBehaviour
 
         PlayerPrefs.SetString(CheckpointKey, json);
         PlayerPrefs.Save();
+    }
+    // ====================================================
+
+    // ================ LoadCheckpoint ====================
+    public GameSaveData LoadCheckpoint()
+    {
+        if (!PlayerPrefs.HasKey(CheckpointKey))
+        {
+            return null;
+        }
+
+        string json = PlayerPrefs.GetString(CheckpointKey);
+        GameSaveData saveData = JsonUtility.FromJson<GameSaveData>(json);
+
+        // =========== Player =====================
+        player.health = 100f;
+
+        player.transform.position = new Vector3(
+            saveData.player.posX,
+            saveData.player.posY,
+            saveData.player.posZ
+        );
+
+        player.transform.eulerAngles = new Vector3(
+            saveData.player.rotX,
+            saveData.player.rotY,
+            saveData.player.rotZ
+        );
+        // =========================================
+
+        // =========== Enemies =====================
+        foreach (EnemyController enemy in enemies)
+        {
+            foreach (EnemySaveData enemyData in saveData.enemies)
+            {
+                if (enemy.enemyID == enemyData.id)
+                {
+                    enemy.health = enemyData.health;
+
+                    enemy.transform.position = new Vector3(
+                        enemyData.posX,
+                        enemyData.posY,
+                        enemyData.posZ
+                    );
+
+                    enemy.transform.eulerAngles = new Vector3(
+                        enemyData.rotX,
+                        enemyData.rotY,
+                        enemyData.rotZ
+                    );
+
+                    enemy.LoadState(
+                        enemyData.health,
+                        enemyData.isDead
+                    );
+
+                    break;
+                }
+            }
+        }
+
+        return saveData;
     }
 
     // -------------------- UTILITY Funcs -------------------------
