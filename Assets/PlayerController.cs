@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 5f;
     public float rotationSpeed = 10f;
     public float jumpHeight = 2f;
+    public GameManager gameManager;
+    public SaveManager saveManager;
 
     // Physics
     private Vector3 velocity;
@@ -180,12 +182,14 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
 
-        if (animator != null)
-        {
+        if (animator != null) 
             animator.enabled = false;
-        }
+        
+        saveManager.SaveCheckpoint();
 
         SetRagdoll(true);
+
+        StartCoroutine(gameManager.PlayerDied());
     }
 
     void ShootBullet()

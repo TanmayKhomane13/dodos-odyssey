@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public SaveManager saveManager;
     public UnityEngine.UI.Button resumeButton;
     public static bool shouldLoadSave = false;
+    public static bool shouldLoadCheckpoint = false;
 
     void Start()
     {
@@ -35,6 +36,11 @@ public class GameManager : MonoBehaviour
         if (shouldLoadSave)
         {
             StartCoroutine(LoadSavedGame());
+        }
+
+        if (shouldLoadCheckpoint)
+        {
+            StartCoroutine(LoadCheckpoint());
         }
 
         StartCoroutine(LevelIntro());
@@ -159,5 +165,23 @@ public class GameManager : MonoBehaviour
 
         saveManager.LoadGame();
         shouldLoadSave = false;
+    }
+
+    IEnumerator LoadCheckpoint()
+    {
+        yield return null;
+
+        saveManager.LoadCheckpoint();
+        shouldLoadCheckpoint = false;
+    }
+
+    // ------------- Checkpoint related (when player dies) ---------------
+    public IEnumerator PlayerDied()
+    {
+     
+        yield return new WaitForSeconds(3f);
+
+        shouldLoadCheckpoint = true;
+        SceneManager.LoadScene("Level 1");
     }
 }
