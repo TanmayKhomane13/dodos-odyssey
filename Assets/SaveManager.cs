@@ -2,7 +2,15 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
+    /* This SaveKey will be used to restore game state from where the 
+    player ended the last session.
+    */
     private const string SaveKey = "DodosOdyssey_Save";
+
+    /* This CheckpointKey will be used to start the game from the last
+    checkpoint when player dies.
+    */
+    private const string CheckpointKey = "DodosOdyssey_Checkpoint";
 
     public PlayerController player;
     public EnemyController[] enemies;
@@ -66,6 +74,55 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.SetString(SaveKey, json);
         PlayerPrefs.Save();
     }
+
+    public void SaveCheckpoint()
+    {
+        GameSaveData saveData = new GameSaveData();
+
+        // ------- Player ------------
+        saveData.player = new PlayerSaveData();
+        
+        saveData.player.health = 100f;
+
+        saveData.player.posX = player.transform.position.x;
+        saveData.player.posY = player.transform.position.y;
+        saveData.player.posZ = player.transform.position.z;
+
+        saveData.player.rotX = player.transform.eulerAngles.x;
+        saveData.player.rotY = player.transform.eulerAngles.y;
+        saveData.player.rotZ = player.transform.eulerAngles.z;
+        // ----------------------------
+
+        // -------- Enemies -----------
+        saveData.enemies = new System.Collections.Generic.List<EnemySaveData>();
+
+        foreach (EnemyController enemy in enemies)
+        {
+            EnemySaveData enemyData = new EnemySaveData();
+
+            enemyData.id = enemy.enemyID;
+            enemyData.health = enemy.health;
+
+            enemyData.posX = enemy.transform.position.x;
+            enemyData.posY = enemy.transform.position.y;
+            enemyData.posZ = enemy.transform.position.z;
+
+            enemyData.rotX = enemy.transform.eulerAngles.x;
+            enemyData.rotY = enemy.transform.eulerAngles.y;
+            enemyData.rotZ = enemy.transform.eulerAngles.z;
+
+            enemyData.isDead = enemy.IsDead();
+
+            saveData.enemies.Add(enemyData);
+        }
+
+        string json = JsonUtility.ToJson(saveData);
+
+        PlayerPrefs.SetString(CheckpointKey, json);
+        PlayerPrefs.Save();
+    }
+
+    // -------------------- UTILITY Funcs -------------------------
 
     // function to check if save exists
     public bool HasSave()

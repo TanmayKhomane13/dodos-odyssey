@@ -113,5 +113,6 @@ InitTestScene*.unity*
 /Assets/Scenes/
 /Assets/gun
 /Assets/Art
+/Assets/Sounds
 
 .DS_Store
