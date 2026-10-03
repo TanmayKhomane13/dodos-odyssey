@@ -69,7 +69,6 @@ public class SaveManager : MonoBehaviour
         // -------------------------------------------------
 
         string json = JsonUtility.ToJson(saveData);
-        Debug.Log(json);
 
         PlayerPrefs.SetString(SaveKey, json);
         PlayerPrefs.Save();

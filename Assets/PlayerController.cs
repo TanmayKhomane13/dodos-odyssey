@@ -25,6 +25,12 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     public Transform cameraTransform;
 
+    // SFX SECTION
+    public AudioSource audioSource;
+    public AudioClip walkSound;
+    public AudioClip runSound;
+    public AudioClip hitSound;
+
     // GUN SECTION
     private Transform rightHand;
     public GameObject gun;
@@ -38,9 +44,12 @@ public class PlayerController : MonoBehaviour
     {
         if (healthText != null)
             healthText.text = health.ToString("0");
-
+        
+        // Get the Player Components
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.loop = true;
 
         // ragdoll
         ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
@@ -111,6 +120,36 @@ public class PlayerController : MonoBehaviour
         float currentSpeed = isRunning ? runSpeed : moveSpeed;
 
         animator.SetBool("IsRunning", isRunning);
+
+        if (movement.magnitude > 0.1f && grounded)
+        {
+            if (isRunning)
+            {
+                if (audioSource.clip != runSound)
+                {
+                    audioSource.clip = runSound;
+                    audioSource.Play();
+                }
+            }
+            else
+            {
+                if (audioSource.clip != walkSound)
+                {
+                    audioSource.clip = walkSound;
+                    audioSource.Play();
+                }
+            }
+
+            if (!audioSource.isPlaying)
+                audioSource.Play();
+        }
+        else
+        {
+            if (audioSource.clip == walkSound || audioSource.clip == runSound)
+            {
+                audioSource.Stop();
+            }
+        }
 
         // Rotate the player toward the movement direction
         if (movement.magnitude > 0.1f)
