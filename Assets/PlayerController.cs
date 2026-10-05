@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour
     public Transform cameraTransform;
 
     // SFX SECTION
-    public AudioSource audioSource;
+    [SerializeField] public AudioSource audioSource;
+    [SerializeField] public AudioSource hitAudioSource;
     public AudioClip walkSound;
     public AudioClip runSound;
     public AudioClip hitSound;
@@ -48,9 +49,13 @@ public class PlayerController : MonoBehaviour
         // Get the Player Components
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
-        audioSource.loop = true;
-
+        
+        // Fetch AudioSources
+        AudioSource[] sources = GetComponents<AudioSource>();
+        
+        audioSource = sources[0];
+        hitAudioSource = sources[1];
+        
         // ragdoll
         ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
         ragdollColliders = GetComponentsInChildren<Collider>();
@@ -121,6 +126,7 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("IsRunning", isRunning);
 
+        // movement based Audio Handling
         if (movement.magnitude > 0.1f && grounded)
         {
             if (isRunning)
@@ -251,6 +257,9 @@ public class PlayerController : MonoBehaviour
     public void TakeHit()
     {
         animator.SetTrigger("Hit");
+
+        hitAudioSource.PlayOneShot(hitSound);
+
         TakeDamage(10f);
     }
 
