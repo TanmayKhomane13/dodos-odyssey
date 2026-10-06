@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [Header("Basics")]
     public float speed = 20f;
     private bool hasHit = false;
+
+    // Effects on Impact
+    [Header("Effects on Impact")]
     public float impactForce = 0.3f;
     public GameObject impactEffect;
-
+   
     void Update()
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
@@ -29,7 +33,6 @@ public class Bullet : MonoBehaviour
             hasHit = true;
             enemy.TakeDamage(10f);
             enemy.ApplyBulletImpact(impactDirection, impactForce);
-            Destroy(gameObject);
         }
 
         // Alien Boss
@@ -38,12 +41,14 @@ public class Bullet : MonoBehaviour
             hasHit = true;
             alienBoss.TakeDamage(10f);
             alienBoss.ApplyBulletImpact(impactDirection, impactForce);
-            Destroy(gameObject);
         }
 
         // instantiate particle system effect
         Instantiate(
             impactEffect, collision.contacts[0].point, Quaternion.identity
         );
+
+        // Destroy bullet for ANY collision
+        Destroy(gameObject);
     }
 }
